@@ -17,12 +17,8 @@ module.exports = function (app) {
   // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
   // ---------------------------------------------------------------------------
 
-  app.get('/api/tables', (req, res) => {
+  app.get('/api/friends', (req, res) => {
     res.json(tableData);
-  });
-
-  app.get('/api/waitlist', (req, res) => {
-    res.json(waitListData);
   });
 
   // API POST Requests
@@ -33,28 +29,41 @@ module.exports = function (app) {
   // Then the server saves the data to the tableData array)
   // ---------------------------------------------------------------------------
 
-  app.post('/api/tables', (req, res) => {
+  app.post('/api/friends', (req, res) => {
     // Note the code here. Our "server" will respond to requests and let users know if they have a table or not.
     // It will do this by sending out the value "true" have a table
     // req.body is available since we're using the body parsing middleware
-    if (tableData.length < 5) {
-      tableData.push(req.body);
-      res.json(true);
-    } else {
-      waitListData.push(req.body);
-      res.json(false);
+
+    const parsed = req.body.scores.map((x) => parseInt(x, 10));
+    req.body.scores = parsed;
+
+    const newFriend = req.body.scores;
+
+    // console.log(friends);
+
+    const matches = [];
+    // loop through friend objects
+    for (let i = 0; i < friends.length; i += 1) {
+      let totalDifference = 0;
+      // loops through answers
+      for (let j = 0; j < newFriend.length; j += 1) {
+        const current = Math.abs(newFriend[j] - friends[i].scores[j]);
+
+        totalDifference += current;
+      }
+      const matchObject = {
+        number: totalDifference,
+        position: i,
+      };
+      matches.push(matchObject);
     }
-  });
 
-  // ---------------------------------------------------------------------------
-  // I added this below code so you could clear out the table while working with the functionality.
-  // Don"t worry about it!
+    console.log(matches);
+    matches.sort((a, b) => a.number - b.number);
 
-  app.post('/api/clear', (req, res) => {
-    // Empty out the arrays of data
-    tableData.length = 0;
-    waitListData.length = 0;
+    console.log(matches);
+    friends.push(req.body);
 
-    res.json({ ok: true });
+    res.json(friends[matches[0].position]);
   });
 };

@@ -10,7 +10,12 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <script src="survey.js"></script>
+    <!-- <script src="./survey.js"></script> -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
     <title>Survey</title>
   </head>
   <body>
@@ -20,11 +25,11 @@
       <h2>Your mind is always buzzing with unexplored ideas and plans.</h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q1">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
@@ -34,11 +39,11 @@
       </h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q2">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
@@ -48,33 +53,33 @@
       </h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q3">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
       <h2>You rarely do something just out of sheer curiosity.</h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q4">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
       <h2>People can rarely upset you.</h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q5">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
@@ -83,11 +88,11 @@
       </h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q6">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
@@ -97,22 +102,22 @@
       </h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q7">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
       <h2>You rarely get carried away by fantasies and ideas.</h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q8">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
@@ -122,11 +127,11 @@
       </h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q9">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
@@ -135,15 +140,38 @@
       </h2>
       <div class="form-group col-md-3">
         <select class="form-control" id="q10">
-          <option>1 (strongly Disagree)</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-          <option>5 (strongly agree)</option>
+          <option>5</option>
         </select>
       </div>
 
-      <input class="btn btn-primary" type="submit" value="Submit" />
+      <input class="btn btn-primary submit" type="submit" value="Submit" />
     </div>
+    <script>
+      $('.submit').on('click', (event) => {
+        event.preventDefault();
+
+        const newFriend = {
+          name: $('#name')
+            .val()
+            .trim(),
+          scores: []
+        };
+        // looping through answers to get values in array
+        for (let i = 1; i < 11; i += 1) {
+          const current = $(`#q${i}`).val();
+          const parsed = parseInt(current);
+          newFriend.scores.push(parsed);
+        }
+        // putting answers into object format with name
+
+        $.post('/api/friends', newFriend, function(data) {
+          console.log(data);
+        });
+      });
+    </script>
   </body>
 </html>
