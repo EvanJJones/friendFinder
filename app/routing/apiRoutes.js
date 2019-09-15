@@ -41,6 +41,7 @@ module.exports = function (app) {
 
     // console.log(friends);
 
+    // will hold the objects to be sorted to find the best match
     const matches = [];
     // loop through friend objects
     for (let i = 0; i < friends.length; i += 1) {
@@ -51,19 +52,24 @@ module.exports = function (app) {
 
         totalDifference += current;
       }
+      // object that holds the match number and the position in the original array
       const matchObject = {
         number: totalDifference,
         position: i,
       };
+      // pushes object into array
       matches.push(matchObject);
     }
 
     console.log(matches);
+    // sorting matches to find lowest number, match will be position 0
     matches.sort((a, b) => a.number - b.number);
 
     console.log(matches);
+    // adding the new person into the list of friends
     friends.push(req.body);
 
+    // sending the match back to html
     res.json(friends[matches[0].position]);
   });
 };

@@ -21,6 +21,7 @@
   <body>
     <div class="container">
       <h1>Survey</h1>
+      <h2>Name</h2>
       <input type="text" id="name" class="form-control" />
       <h2>Your mind is always buzzing with unexplored ideas and plans.</h2>
       <div class="form-group col-md-3">
@@ -149,6 +150,14 @@
       </div>
 
       <input class="btn btn-primary submit" type="submit" value="Submit" />
+
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Some text in the Modal..</p>
+        </div>
+      </div>
     </div>
     <script>
       $('.submit').on('click', (event) => {
@@ -170,6 +179,7 @@
 
         $.post('/api/friends', newFriend, function(data) {
           console.log(data);
+          $('body').html(`<h1>Your Match is ${data.name}</h1>`);
         });
       });
     </script>
